@@ -1,0 +1,2539 @@
+openapi: 3.0.2
+info:
+  title: Prime Studio API
+  version: 0.1.0
+paths:
+  /vimeo/videos:
+    get:
+      summary: Get Vimeo Videos
+      description: Get videos from VimeoAPI
+      operationId: get_vimeo_videos_vimeo_videos_get
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VideoVimeo"
+  /db/videos:
+    get:
+      summary: Get Db Videos
+      description: Get videos from DynamoDB
+      operationId: get_db_videos_db_videos_get
+      parameters:
+        - required: false
+          schema:
+            title: All
+            type: boolean
+            default: false
+          name: all
+          in: query
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                title: Response Get Db Videos Db Videos Get
+                type: array
+                items:
+                  $ref: "#/components/schemas/VideoDB"
+        "422":
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+  /videos:
+    get:
+      summary: Get Videos
+      description: Get videos merged VimeoAPI & DynamoDB
+      operationId: get_videos_videos_get
+      parameters:
+        - required: false
+          schema:
+            title: All
+            type: boolean
+            default: false
+          name: all
+          in: query
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                title: Response Get Videos Videos Get
+                type: array
+                items:
+                  $ref: "#/components/schemas/Video"
+        "422":
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+  /video/{video_id}:
+    get:
+      summary: Get Video
+      description: Get video from DynamoDB
+      operationId: get_video_video__video_id__get
+      parameters:
+        - required: true
+          schema:
+            title: Video Id
+          name: video_id
+          in: path
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        "422":
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+  /video/status/:
+    get:
+      summary: Get Transcode Status
+      description: Get upload status to vimeo
+      operationId: get_transcode_status_video_status__get
+      parameters:
+        - required: true
+          schema:
+            title: Video Id
+            type: string
+          name: video_id
+          in: query
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        "422":
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+  /video:
+    put:
+      summary: Put Video
+      description: Put video to dynamoDB
+      operationId: put_video_video_put
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReqVideoPut"
+        required: true
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        "422":
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+    post:
+      summary: Post Video To Db
+      description: Post video to DynamoDB
+      operationId: post_video_to_db_video_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReqVideoPost"
+        required: true
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        "422":
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+  /video/thumbnail/{video_id}:
+    post:
+      summary: Post Thumbnail Vimeo
+      description: Upload thumbnail to vimeo
+      operationId: post_thumbnail_vimeo_video_thumbnail__video_id__post
+      parameters:
+        - required: true
+          schema:
+            title: Video Id
+            type: integer
+          name: video_id
+          in: path
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: >-
+                #/components/schemas/Body_post_thumbnail_vimeo_video_thumbnail__video_id__post
+        required: true
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        "422":
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+  /path/{path_id}:
+    get:
+      summary: Get Path
+      description: Get learning path from DynamoDB
+      operationId: get_path_path__path_id__get
+      parameters:
+        - required: true
+          schema:
+            title: Path Id
+          name: path_id
+          in: path
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Path"
+        "422":
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+  /paths:
+    get:
+      summary: Get Paths
+      description: Get learning paths and video orders from DynamoDB
+      operationId: get_paths_paths_get
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                title: Response Get Paths Paths Get
+                type: array
+                items:
+                  $ref: "#/components/schemas/Path"
+  /path:
+    put:
+      summary: Put Path
+      description: Put learning path and relations to DynamoDB
+      operationId: put_path_path_put
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReqPathPutTransact"
+        required: true
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        "422":
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+    post:
+      summary: Post Path
+      description: Post learning path to DynamoDB
+      operationId: post_path_path_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReqPathPost"
+        required: true
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        "422":
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+    delete:
+      summary: Delete Path
+      description: Delete learning path and relations from DynamoDB
+      operationId: delete_path_path_delete
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReqPathDeleteTransact"
+        required: true
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        "422":
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+  /tags:
+    get:
+      summary: Get Tags
+      description: Get tags from dynamoDB
+      operationId: get_tags_tags_get
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                title: Response Get Tags Tags Get
+                type: array
+                items:
+                  $ref: "#/components/schemas/Tag"
+  /tag:
+    put:
+      summary: Put Tag
+      description: Put tag to DynamoDB
+      operationId: put_tag_tag_put
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReqTagPut"
+        required: true
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        "422":
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+    post:
+      summary: Post Tag
+      description: Post tag to DynamoDB
+      operationId: post_tag_tag_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReqTagPost"
+        required: true
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        "422":
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+    delete:
+      summary: Delete Tag
+      description: delete tag meta and video/tag relations
+      operationId: delete_tag_tag_delete
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReqTagDelete"
+        required: true
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        "422":
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+  /categories:
+    get:
+      summary: Get Categories
+      description: Get categories from dynamoDB
+      operationId: get_categories_categories_get
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                title: Response Get Categories Categories Get
+                type: array
+                items:
+                  $ref: "#/components/schemas/Category"
+  /category:
+    put:
+      summary: Put Category
+      description: Put category to DynamoDB
+      operationId: put_category_category_put
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReqCategoryPut"
+        required: true
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        "422":
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+    post:
+      summary: Post Category
+      description: Post category to DynamoDB
+      operationId: post_category_category_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReqCategoryPost"
+        required: true
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        "422":
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+  /videos/{category_id}:
+    get:
+      summary: Get Videos Contain Any Category
+      description: get videos contain any tag
+      operationId: get_videos_contain_any_category_videos__category_id__get
+      parameters:
+        - required: true
+          schema:
+            title: Category Id
+          name: category_id
+          in: path
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        "422":
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+  /category/{category_id}:
+    delete:
+      summary: Delete Category
+      description: delete category meta
+      operationId: delete_category_category__category_id__delete
+      parameters:
+        - required: true
+          schema:
+            title: Category Id
+          name: category_id
+          in: path
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        "422":
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+  /users:
+    get:
+      summary: Get Users
+      description: Get users from dynamoDB
+      operationId: get_users_users_get
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                title: Response Get Users Users Get
+                type: array
+                items:
+                  $ref: "#/components/schemas/User"
+  /user/{user_id}:
+    get:
+      summary: Get User
+      description: Get user from DynamoDB
+      operationId: get_user_user__user_id__get
+      parameters:
+        - required: true
+          schema:
+            title: User Id
+          name: user_id
+          in: path
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        "422":
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+  /user:
+    put:
+      summary: Put User
+      description: Put user to dynamoDB
+      operationId: put_user_user_put
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReqUser"
+        required: true
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        "422":
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+    post:
+      summary: Post User
+      description: Post user to dynamoDB
+      operationId: post_user_user_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReqUser"
+        required: true
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        "422":
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+  /history/{user_id}:
+    get:
+      summary: Get History
+      description: Get histories for each user from DynamoDB
+      operationId: get_history_history__user_id__get
+      parameters:
+        - required: true
+          schema:
+            title: User Id
+          name: user_id
+          in: path
+        - required: false
+          schema:
+            title: Limit
+            type: integer
+            default: 30
+          name: limit
+          in: query
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                title: Response Get History History  User Id  Get
+                type: array
+                items:
+                  $ref: "#/components/schemas/UserHistory"
+        "422":
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+  /history:
+    post:
+      summary: Post History
+      description: Post history to dynamoDB
+      operationId: post_history_history_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReqHistory"
+        required: true
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        "422":
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+  /favorite/{user_id}:
+    get:
+      summary: Get Favorite
+      description: Get favorite videos for each user from DynamoDB
+      operationId: get_favorite_favorite__user_id__get
+      parameters:
+        - required: true
+          schema:
+            title: User Id
+          name: user_id
+          in: path
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                title: Response Get Favorite Favorite  User Id  Get
+                type: array
+                items:
+                  $ref: "#/components/schemas/Favorite"
+        "422":
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+  /favorite:
+    post:
+      summary: Post Favorite
+      description: Post favorite video to DynamoDB
+      operationId: post_favorite_favorite_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReqFavorite"
+        required: true
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        "422":
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+    delete:
+      summary: Delete Favorite
+      description: Delete favorite video from DynamoDB
+      operationId: delete_favorite_favorite_delete
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReqFavorite"
+        required: true
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        "422":
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+  /like/{video_id}:
+    get:
+      summary: Get Likes
+      description: Get like for video from DynamoDB
+      operationId: get_likes_like__video_id__get
+      parameters:
+        - required: true
+          schema:
+            title: Video Id
+          name: video_id
+          in: path
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Likes"
+        "422":
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+  /like:
+    post:
+      summary: Post Like
+      description: Post like for video to DynamoDB
+      operationId: post_like_like_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReqLikePost"
+        required: true
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        "422":
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+    delete:
+      summary: Delete Like
+      description: Delete like for video from DynamoDB
+      operationId: delete_like_like_delete
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReqLikeDelete"
+        required: true
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        "422":
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+  /thread/{video_id}:
+    get:
+      summary: Get Thread
+      description: Get threads for video from DynamoDB
+      operationId: get_thread_thread__video_id__get
+      parameters:
+        - required: true
+          schema:
+            title: Video Id
+          name: video_id
+          in: path
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                title: Response Get Thread Thread  Video Id  Get
+                type: array
+                items:
+                  $ref: "#/components/schemas/Thread"
+        "422":
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+  /thread:
+    put:
+      summary: Put Thread
+      description: Put thread for video to DynamoDB
+      operationId: put_thread_thread_put
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReqThreadPut"
+        required: true
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        "422":
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+    post:
+      summary: Post Thread
+      description: Post thread for video to DynamoDB
+      operationId: post_thread_thread_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReqThreadPost"
+        required: true
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        "422":
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+    delete:
+      summary: Delete Thread
+      description: Delete thread for video from DynamoDB
+      operationId: delete_thread_thread_delete
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReqThreadDelete"
+        required: true
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        "422":
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+  /banners:
+    get:
+      summary: Get Banners
+      description: Get banners from DynamoDB
+      operationId: get_banners_banners_get
+      parameters:
+        - required: false
+          schema:
+            title: Active
+            type: boolean
+            default: false
+          name: active
+          in: query
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                title: Response Get Banners Banners Get
+                type: array
+                items:
+                  $ref: "#/components/schemas/Banner"
+        "422":
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+  /banner:
+    put:
+      summary: Put Banner
+      description: Put banner to DynamoDB
+      operationId: put_banner_banner_put
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReqBannerPut"
+        required: true
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        "422":
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+    post:
+      summary: Post Banner
+      description: Post banner to DynamoDB
+      operationId: post_banner_banner_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReqBannerPost"
+        required: true
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        "422":
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+  /banner/image:
+    post:
+      summary: Post Banner Image
+      description: Upload banner image to S3 bucket
+      operationId: post_banner_image_banner_image_post
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/Body_post_banner_image_banner_image_post"
+        required: true
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BannerImage"
+        "422":
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+  /table/videos:
+    get:
+      summary: Get Table Videos
+      description: Get videos merged VimeoAPI & DynamoDB for table
+      operationId: get_table_videos_table_videos_get
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                title: Response Get Table Videos Table Videos Get
+                type: array
+                items:
+                  $ref: "#/components/schemas/VideoTableRow"
+  /upload:
+    post:
+      summary: Post Upload File
+      description: Get upload URL to vimeo
+      operationId: post_upload_file_upload_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReqFile"
+        required: true
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UploadFile"
+        "422":
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+  /upload/status:
+    get:
+      summary: Get Upload Status
+      description: Get upload status from DynamoDB
+      operationId: get_upload_status_upload_status_get
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                title: Response Get Upload Status Upload Status Get
+                type: array
+                items:
+                  $ref: "#/components/schemas/UploadStatus"
+    put:
+      summary: Put Upload Status
+      description: Put upload status to DynamoDB
+      operationId: put_upload_status_upload_status_put
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReqUploadStatusPut"
+        required: true
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResUploadStatus"
+        "422":
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+    post:
+      summary: Post Upload Status
+      description: Post upload status to DynamoDB
+      operationId: post_upload_status_upload_status_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReqUploadStatusPost"
+        required: true
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResUploadStatus"
+        "422":
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+  /hello:
+    get:
+      summary: Read Root
+      description: getting startd FastAPI
+      operationId: read_root_hello_get
+      parameters:
+        - required: false
+          schema:
+            title: User-Agent
+            type: string
+          name: user-agent
+          in: header
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        "422":
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+components:
+  schemas:
+    Banner:
+      title: Banner
+      required:
+        - id
+        - indexKey
+        - PK
+        - SK
+        - createdAt
+        - createdUser
+        - updatedAt
+        - updatedUser
+        - invalid
+        - name
+        - description
+      type: object
+      properties:
+        id:
+          title: Id
+          type: integer
+        indexKey:
+          title: Indexkey
+          type: string
+        PK:
+          title: Pk
+          type: string
+        SK:
+          title: Sk
+          type: string
+        createdAt:
+          title: Createdat
+          type: string
+        createdUser:
+          title: Createduser
+          type: string
+        updatedAt:
+          title: Updatedat
+          type: string
+        updatedUser:
+          title: Updateduser
+          type: string
+        invalid:
+          title: Invalid
+          type: boolean
+        note:
+          title: Note
+          type: string
+        name:
+          title: Name
+          type: string
+        description:
+          title: Description
+          type: string
+        image:
+          title: Image
+          type: string
+        link:
+          title: Link
+          type: string
+      description: Banner response body
+    BannerImage:
+      title: BannerImage
+      required:
+        - url
+      type: object
+      properties:
+        url:
+          title: Url
+          type: string
+      description: Banner image response body
+    Body_post_banner_image_banner_image_post:
+      title: Body_post_banner_image_banner_image_post
+      required:
+        - image
+      type: object
+      properties:
+        image:
+          title: Image
+          type: string
+          format: binary
+    Body_post_thumbnail_vimeo_video_thumbnail__video_id__post:
+      title: Body_post_thumbnail_vimeo_video_thumbnail__video_id__post
+      required:
+        - image
+      type: object
+      properties:
+        image:
+          title: Image
+          type: string
+          format: binary
+    Category:
+      title: Category
+      required:
+        - id
+        - indexKey
+        - PK
+        - SK
+        - createdAt
+        - createdUser
+        - updatedAt
+        - updatedUser
+        - invalid
+        - name
+        - parentId
+      type: object
+      properties:
+        id:
+          title: Id
+          type: integer
+        indexKey:
+          title: Indexkey
+          type: string
+        PK:
+          title: Pk
+          type: string
+        SK:
+          title: Sk
+          type: string
+        createdAt:
+          title: Createdat
+          type: string
+        createdUser:
+          title: Createduser
+          type: string
+        updatedAt:
+          title: Updatedat
+          type: string
+        updatedUser:
+          title: Updateduser
+          type: string
+        invalid:
+          title: Invalid
+          type: boolean
+        note:
+          title: Note
+          type: string
+        name:
+          title: Name
+          type: string
+        description:
+          title: Description
+          type: string
+        parentId:
+          title: Parentid
+          type: string
+        parent:
+          title: Parent
+          type: string
+          default: ""
+      description: Category response body
+    DataVideoVimeo:
+      title: DataVideoVimeo
+      type: object
+      properties:
+        uri:
+          title: Uri
+          type: string
+          default: ""
+        name:
+          title: Name
+          type: string
+          default: ""
+        duration:
+          title: Duration
+          type: integer
+          default: ""
+        stats:
+          title: Stats
+          allOf:
+            - $ref: "#/components/schemas/StatsVimeo"
+          default: ""
+        privacy:
+          $ref: "#/components/schemas/PrivacyVimeo"
+        html:
+          title: Html
+          type: string
+          default: ""
+        thumbnail:
+          title: Thumbnail
+          allOf:
+            - $ref: "#/components/schemas/ThumbnailVimeo"
+          default: ""
+      description: Video rawdata from Vimeo
+    Favorite:
+      title: Favorite
+      required:
+        - indexKey
+        - PK
+        - SK
+        - createdAt
+      type: object
+      properties:
+        indexKey:
+          title: Indexkey
+          type: string
+        PK:
+          title: Pk
+          type: string
+        SK:
+          title: Sk
+          type: string
+        createdAt:
+          title: Createdat
+          type: string
+      description: Favorite from dynamoDB
+    HTTPValidationError:
+      title: HTTPValidationError
+      type: object
+      properties:
+        detail:
+          title: Detail
+          type: array
+          items:
+            $ref: "#/components/schemas/ValidationError"
+    Like:
+      title: Like
+      required:
+        - indexKey
+        - PK
+        - SK
+        - createdAt
+        - createdUser
+        - like
+      type: object
+      properties:
+        indexKey:
+          title: Indexkey
+          type: string
+        PK:
+          title: Pk
+          type: string
+        SK:
+          title: Sk
+          type: string
+        createdAt:
+          title: Createdat
+          type: string
+        createdUser:
+          title: Createduser
+          type: string
+        like:
+          title: Like
+          type: boolean
+      description: Like for video
+    Likes:
+      title: Likes
+      required:
+        - good
+        - bad
+      type: object
+      properties:
+        good:
+          title: Good
+          type: array
+          items:
+            $ref: "#/components/schemas/Like"
+        bad:
+          title: Bad
+          type: array
+          items:
+            $ref: "#/components/schemas/Like"
+      description: Likes for video
+    Path:
+      title: Path
+      required:
+        - id
+        - indexKey
+        - PK
+        - SK
+        - createdAt
+        - createdUser
+        - updatedAt
+        - updatedUser
+        - invalid
+        - name
+        - description
+      type: object
+      properties:
+        id:
+          title: Id
+          type: integer
+        indexKey:
+          title: Indexkey
+          type: string
+        PK:
+          title: Pk
+          type: string
+        SK:
+          title: Sk
+          type: string
+        createdAt:
+          title: Createdat
+          type: string
+        createdUser:
+          title: Createduser
+          type: string
+        updatedAt:
+          title: Updatedat
+          type: string
+        updatedUser:
+          title: Updateduser
+          type: string
+        invalid:
+          title: Invalid
+          type: boolean
+        note:
+          title: Note
+          type: string
+        name:
+          title: Name
+          type: string
+        description:
+          title: Description
+          type: string
+        videos:
+          title: Videos
+          type: array
+          items:
+            $ref: "#/components/schemas/VideoOrder"
+          default: []
+      description: Learning Path response body
+    PrivacyVimeo:
+      title: PrivacyVimeo
+      required:
+        - view
+      type: object
+      properties:
+        view:
+          title: View
+          type: string
+      description: Privacy from Vimeo
+    ReqBannerPost:
+      title: ReqBannerPost
+      required:
+        - user
+        - name
+        - description
+        - image
+      type: object
+      properties:
+        user:
+          title: User
+          type: string
+        name:
+          title: Name
+          type: string
+        description:
+          title: Description
+          type: string
+        image:
+          title: Image
+          type: string
+        link:
+          title: Link
+          type: string
+          default: ""
+        note:
+          title: Note
+          type: string
+          default: ""
+      description: Post banner request body
+    ReqBannerPut:
+      title: ReqBannerPut
+      required:
+        - PK
+        - user
+      type: object
+      properties:
+        PK:
+          title: Pk
+          type: string
+        user:
+          title: User
+          type: string
+        name:
+          title: Name
+          type: string
+        description:
+          title: Description
+          type: string
+        image:
+          title: Image
+          type: string
+        link:
+          title: Link
+          type: string
+        note:
+          title: Note
+          type: string
+        invalid:
+          title: Invalid
+          type: boolean
+      description: Put banner request body
+    ReqCategoryPost:
+      title: ReqCategoryPost
+      required:
+        - user
+        - name
+        - description
+      type: object
+      properties:
+        user:
+          title: User
+          type: string
+        name:
+          title: Name
+          type: string
+        description:
+          title: Description
+          type: string
+        note:
+          title: Note
+          type: string
+          default: ""
+        parentId:
+          title: Parentid
+          type: string
+          default: C999
+      description: Post category request body
+    ReqCategoryPut:
+      title: ReqCategoryPut
+      required:
+        - PK
+        - user
+      type: object
+      properties:
+        PK:
+          title: Pk
+          type: string
+        user:
+          title: User
+          type: string
+        name:
+          title: Name
+          type: string
+        parentId:
+          title: Parentid
+          type: string
+        description:
+          title: Description
+          type: string
+        note:
+          title: Note
+          type: string
+        invalid:
+          title: Invalid
+          type: boolean
+      description: Put category request body
+    ReqFavorite:
+      title: ReqFavorite
+      required:
+        - user
+        - video
+      type: object
+      properties:
+        user:
+          title: User
+          type: string
+        video:
+          title: Video
+          type: string
+      description: Favorite request body
+    ReqFile:
+      title: ReqFile
+      required:
+        - name
+        - description
+        - size
+      type: object
+      properties:
+        name:
+          title: Name
+          type: string
+        description:
+          title: Description
+          type: string
+        size:
+          title: Size
+          type: integer
+      description: File request body
+    ReqHistory:
+      title: ReqHistory
+      required:
+        - user
+        - video
+        - createdAt
+      type: object
+      properties:
+        user:
+          title: User
+          type: string
+        video:
+          title: Video
+          type: string
+        createdAt:
+          title: Createdat
+          type: string
+        parse:
+          title: Parse
+          type: number
+          default: 0
+        finishedAt:
+          title: Finishedat
+          type: string
+          default: ""
+        referrer:
+          title: Referrer
+          type: string
+          default: ""
+      description: History request body
+    ReqLikeDelete:
+      title: ReqLikeDelete
+      required:
+        - video
+        - id
+      type: object
+      properties:
+        video:
+          title: Video
+          type: string
+        id:
+          title: Id
+          type: string
+      description: Delete like request body
+    ReqLikePost:
+      title: ReqLikePost
+      required:
+        - video
+        - user
+        - like
+      type: object
+      properties:
+        video:
+          title: Video
+          type: string
+        user:
+          title: User
+          type: string
+        like:
+          title: Like
+          type: boolean
+      description: Post like request body
+    ReqPathDeleteTransact:
+      title: ReqPathDeleteTransact
+      required:
+        - PK
+        - user
+      type: object
+      properties:
+        PK:
+          title: Pk
+          type: string
+        user:
+          title: User
+          type: string
+    ReqPathPost:
+      title: ReqPathPost
+      required:
+        - name
+        - description
+        - user
+      type: object
+      properties:
+        name:
+          title: Name
+          type: string
+        description:
+          title: Description
+          type: string
+        note:
+          title: Note
+          type: string
+          default: ""
+        user:
+          title: User
+          type: string
+      description: Post learning path request body
+    ReqPathPutTransact:
+      title: ReqPathPutTransact
+      required:
+        - PK
+        - user
+      type: object
+      properties:
+        PK:
+          title: Pk
+          type: string
+        user:
+          title: User
+          type: string
+        name:
+          title: Name
+          type: string
+        description:
+          title: Description
+          type: string
+        note:
+          title: Note
+          type: string
+        invalid:
+          title: Invalid
+          type: boolean
+        appended:
+          title: Appended
+          type: array
+          items:
+            type: string
+          default: []
+        removed:
+          title: Removed
+          type: array
+          items:
+            type: string
+          default: []
+        orders:
+          title: Orders
+          type: array
+          items:
+            $ref: "#/components/schemas/VideoOrder"
+          default: []
+      description: Put learningh path request body
+    ReqTagDelete:
+      title: ReqTagDelete
+      required:
+        - PK
+        - user
+      type: object
+      properties:
+        PK:
+          title: Pk
+          type: string
+        user:
+          title: User
+          type: string
+      description: Delete tag request body
+    ReqTagPost:
+      title: ReqTagPost
+      required:
+        - user
+        - name
+      type: object
+      properties:
+        user:
+          title: User
+          type: string
+        name:
+          title: Name
+          type: string
+        description:
+          title: Description
+          type: string
+          default: ""
+        note:
+          title: Note
+          type: string
+          default: ""
+      description: Post tag request body
+    ReqTagPut:
+      title: ReqTagPut
+      required:
+        - PK
+        - user
+      type: object
+      properties:
+        PK:
+          title: Pk
+          type: string
+        user:
+          title: User
+          type: string
+        name:
+          title: Name
+          type: string
+        description:
+          title: Description
+          type: string
+        note:
+          title: Note
+          type: string
+        invalid:
+          title: Invalid
+          type: boolean
+      description: Put tag request body
+    ReqThreadDelete:
+      title: ReqThreadDelete
+      required:
+        - video
+        - id
+      type: object
+      properties:
+        video:
+          title: Video
+          type: string
+        id:
+          title: Id
+          type: string
+      description: Delete thread request body
+    ReqThreadPost:
+      title: ReqThreadPost
+      required:
+        - video
+        - user
+        - body
+      type: object
+      properties:
+        video:
+          title: Video
+          type: string
+        user:
+          title: User
+          type: string
+        body:
+          title: Body
+          type: string
+        thread:
+          title: Thread
+          type: string
+      description: Post thread request body
+    ReqThreadPut:
+      title: ReqThreadPut
+      required:
+        - video
+        - id
+      type: object
+      properties:
+        video:
+          title: Video
+          type: string
+        id:
+          title: Id
+          type: string
+        body:
+          title: Body
+          type: string
+        invalid:
+          title: Invalid
+          type: boolean
+          default: false
+      description: Put thread request body
+    ReqUploadStatusPost:
+      title: ReqUploadStatusPost
+      required:
+        - uri
+        - user
+        - name
+        - filename
+        - status
+      type: object
+      properties:
+        uri:
+          title: Uri
+          type: string
+        user:
+          title: User
+          type: string
+        name:
+          title: Name
+          type: string
+        filename:
+          title: Filename
+          type: string
+        status:
+          title: Status
+          type: string
+      description: Post upload status request body
+    ReqUploadStatusPut:
+      title: ReqUploadStatusPut
+      required:
+        - uri
+        - timestamp
+        - status
+      type: object
+      properties:
+        uri:
+          title: Uri
+          type: string
+        timestamp:
+          title: Timestamp
+          type: string
+        status:
+          title: Status
+          type: string
+      description: Put upload status request body
+    ReqUser:
+      title: ReqUser
+      required:
+        - PK
+      type: object
+      properties:
+        PK:
+          title: Pk
+          type: string
+        name:
+          title: Name
+          type: string
+        image:
+          title: Image
+          type: string
+        acl:
+          title: Acl
+          type: string
+      description: Post & Put user request body
+    ReqVideoPost:
+      title: ReqVideoPost
+      required:
+        - PK
+        - user
+        - description
+        - categoryId
+      type: object
+      properties:
+        PK:
+          title: Pk
+          type: string
+        user:
+          title: User
+          type: string
+        invalid:
+          title: Invalid
+          type: boolean
+          default: false
+        note:
+          title: Note
+          type: string
+          default: No Remarks
+        description:
+          title: Description
+          type: string
+        learningPathIds:
+          title: Learningpathids
+          type: array
+          items:
+            type: string
+        tagIds:
+          title: Tagids
+          type: array
+          items:
+            type: string
+        categoryId:
+          title: Categoryid
+          type: string
+      description: Post video request body
+    ReqVideoPut:
+      title: ReqVideoPut
+      required:
+        - PK
+        - user
+      type: object
+      properties:
+        PK:
+          title: Pk
+          type: string
+        user:
+          title: User
+          type: string
+        invalid:
+          title: Invalid
+          type: boolean
+        note:
+          title: Note
+          type: string
+        description:
+          title: Description
+          type: string
+        learningPathIds:
+          title: Learningpathids
+          type: array
+          items:
+            type: string
+        tagIds:
+          title: Tagids
+          type: array
+          items:
+            type: string
+        categoryId:
+          title: Categoryid
+          type: string
+      description: Put video request body
+    ResUploadStatus:
+      title: ResUploadStatus
+      required:
+        - uri
+        - timestamp
+        - status
+      type: object
+      properties:
+        uri:
+          title: Uri
+          type: string
+        timestamp:
+          title: Timestamp
+          type: string
+        status:
+          title: Status
+          type: string
+      description: Response upload status
+    StatsVimeo:
+      title: StatsVimeo
+      required:
+        - plays
+      type: object
+      properties:
+        plays:
+          title: Plays
+          type: integer
+      description: Stats from Vimeo
+    Tag:
+      title: Tag
+      required:
+        - id
+        - indexKey
+        - PK
+        - SK
+        - createdAt
+        - createdUser
+        - updatedAt
+        - updatedUser
+        - invalid
+        - name
+        - description
+      type: object
+      properties:
+        id:
+          title: Id
+          type: string
+        indexKey:
+          title: Indexkey
+          type: string
+        PK:
+          title: Pk
+          type: string
+        SK:
+          title: Sk
+          type: string
+        createdAt:
+          title: Createdat
+          type: string
+        createdUser:
+          title: Createduser
+          type: string
+        updatedAt:
+          title: Updatedat
+          type: string
+        updatedUser:
+          title: Updateduser
+          type: string
+        invalid:
+          title: Invalid
+          type: boolean
+        note:
+          title: Note
+          type: string
+        name:
+          title: Name
+          type: string
+        description:
+          title: Description
+          type: string
+      description: Tag response body
+    Thread:
+      title: Thread
+      required:
+        - indexKey
+        - PK
+        - SK
+        - createdAt
+        - createdUser
+        - body
+      type: object
+      properties:
+        indexKey:
+          title: Indexkey
+          type: string
+        PK:
+          title: Pk
+          type: string
+        SK:
+          title: Sk
+          type: string
+        createdAt:
+          title: Createdat
+          type: string
+        createdUser:
+          title: Createduser
+          type: string
+        body:
+          title: Body
+          type: string
+      description: Thread for video
+    ThumbnailVimeo:
+      title: ThumbnailVimeo
+      required:
+        - width
+        - height
+        - link
+      type: object
+      properties:
+        width:
+          title: Width
+          type: integer
+        height:
+          title: Height
+          type: integer
+        link:
+          title: Link
+          type: string
+        link_with_play_button:
+          title: Link With Play Button
+          type: string
+      description: Thumbnail from Vimeo
+    UploadFile:
+      title: UploadFile
+      required:
+        - uri
+        - name
+        - type
+        - description
+        - link
+        - upload_link
+      type: object
+      properties:
+        uri:
+          title: Uri
+          type: string
+        name:
+          title: Name
+          type: string
+        type:
+          title: Type
+          type: string
+        description:
+          title: Description
+          type: string
+        link:
+          title: Link
+          type: string
+        upload_link:
+          title: Upload Link
+          type: string
+      description: File for vimeo upload
+    UploadStatus:
+      title: UploadStatus
+      required:
+        - PK
+        - SK
+        - id
+        - indexKey
+        - createdAt
+        - createdUser
+        - name
+        - filename
+        - status
+      type: object
+      properties:
+        PK:
+          title: Pk
+          type: string
+        SK:
+          title: Sk
+          type: string
+        id:
+          title: Id
+          type: string
+        indexKey:
+          title: Indexkey
+          type: string
+        createdAt:
+          title: Createdat
+          type: string
+        createdUser:
+          title: Createduser
+          type: string
+        name:
+          title: Name
+          type: string
+        filename:
+          title: Filename
+          type: string
+        status:
+          title: Status
+          type: string
+      description: Upload status
+    User:
+      title: User
+      required:
+        - id
+        - indexKey
+        - PK
+        - SK
+        - createdAt
+        - updatedAt
+        - name
+      type: object
+      properties:
+        id:
+          title: Id
+          type: integer
+        indexKey:
+          title: Indexkey
+          type: string
+        PK:
+          title: Pk
+          type: string
+        SK:
+          title: Sk
+          type: string
+        createdAt:
+          title: Createdat
+          type: string
+        updatedAt:
+          title: Updatedat
+          type: string
+        name:
+          title: Name
+          type: string
+        image:
+          title: Image
+          type: string
+          default: ""
+        acl:
+          title: Acl
+          type: string
+          default: user
+      description: User response body
+    UserHistory:
+      title: UserHistory
+      required:
+        - indexKey
+        - PK
+        - SK
+        - createdAt
+        - videoUri
+      type: object
+      properties:
+        indexKey:
+          title: Indexkey
+          type: string
+        PK:
+          title: Pk
+          type: string
+        SK:
+          title: Sk
+          type: string
+        createdAt:
+          title: Createdat
+          type: string
+        videoUri:
+          title: Videouri
+          type: string
+        parse:
+          title: Parse
+          type: number
+          default: 0
+        finishedAt:
+          title: Finishedat
+          type: string
+        referrer:
+          title: Referrer
+          type: string
+      description: History from dynamoDB
+    ValidationError:
+      title: ValidationError
+      required:
+        - loc
+        - msg
+        - type
+      type: object
+      properties:
+        loc:
+          title: Location
+          type: array
+          items:
+            type: string
+        msg:
+          title: Message
+          type: string
+        type:
+          title: Error Type
+          type: string
+    Video:
+      title: Video
+      type: object
+      properties:
+        indexKey:
+          title: Indexkey
+          type: string
+          default: ""
+        PK:
+          title: Pk
+          type: string
+          default: ""
+        SK:
+          title: Sk
+          type: string
+          default: ""
+        createdAt:
+          title: Createdat
+          type: string
+          default: ""
+        createdUser:
+          title: Createduser
+          type: string
+          default: ""
+        updatedAt:
+          title: Updatedat
+          type: string
+          default: ""
+        updatedUser:
+          title: Updateduser
+          type: string
+          default: ""
+        invalid:
+          title: Invalid
+          type: boolean
+          default: true
+        note:
+          title: Note
+          type: string
+          default: ""
+        description:
+          title: Description
+          type: string
+          default: ""
+        learningPathIds:
+          title: Learningpathids
+          type: array
+          items:
+            type: string
+          default: []
+        tagIds:
+          title: Tagids
+          type: array
+          items:
+            type: string
+          default: []
+        categoryId:
+          title: Categoryid
+          type: string
+          default: ""
+        match:
+          title: Match
+          type: boolean
+          default: true
+        uri:
+          title: Uri
+          type: string
+          default: ""
+        name:
+          title: Name
+          type: string
+          default: ""
+        duration:
+          title: Duration
+          type: integer
+          default: ""
+        stats:
+          title: Stats
+          allOf:
+            - $ref: "#/components/schemas/StatsVimeo"
+          default: ""
+        privacy:
+          $ref: "#/components/schemas/PrivacyVimeo"
+        html:
+          title: Html
+          type: string
+          default: ""
+        thumbnail:
+          title: Thumbnail
+          allOf:
+            - $ref: "#/components/schemas/ThumbnailVimeo"
+          default: ""
+      description: Video response body
+    VideoDB:
+      title: VideoDB
+      type: object
+      properties:
+        indexKey:
+          title: Indexkey
+          type: string
+          default: ""
+        PK:
+          title: Pk
+          type: string
+          default: ""
+        SK:
+          title: Sk
+          type: string
+          default: ""
+        createdAt:
+          title: Createdat
+          type: string
+          default: ""
+        createdUser:
+          title: Createduser
+          type: string
+          default: ""
+        updatedAt:
+          title: Updatedat
+          type: string
+          default: ""
+        updatedUser:
+          title: Updateduser
+          type: string
+          default: ""
+        invalid:
+          title: Invalid
+          type: boolean
+          default: true
+        note:
+          title: Note
+          type: string
+          default: ""
+        description:
+          title: Description
+          type: string
+          default: ""
+        learningPathIds:
+          title: Learningpathids
+          type: array
+          items:
+            type: string
+          default: []
+        tagIds:
+          title: Tagids
+          type: array
+          items:
+            type: string
+          default: []
+        categoryId:
+          title: Categoryid
+          type: string
+          default: ""
+        match:
+          title: Match
+          type: boolean
+          default: true
+      description: Video from DynamoDB
+    VideoOrder:
+      title: VideoOrder
+      required:
+        - uri
+      type: object
+      properties:
+        uri:
+          title: Uri
+          type: string
+        order:
+          title: Order
+          type: integer
+          default: 0
+      description: Video order contain learning path
+    VideoTableRow:
+      title: VideoTableRow
+      required:
+        - id
+        - match
+      type: object
+      properties:
+        id:
+          title: Id
+          type: integer
+        match:
+          title: Match
+          type: boolean
+        uri:
+          title: Uri
+          type: string
+          default: ""
+        invalid:
+          title: Invalid
+          type: boolean
+          default: true
+        thumbnail:
+          title: Thumbnail
+          type: string
+          default: ""
+        name:
+          title: Name
+          type: string
+          default: ""
+        description:
+          title: Description
+          type: string
+          default: ""
+        primary:
+          title: Primary
+          type: string
+          default: ""
+        secondary:
+          title: Secondary
+          type: string
+          default: ""
+        tags:
+          title: Tags
+          type: array
+          items:
+            type: string
+          default: []
+        paths:
+          title: Paths
+          type: array
+          items:
+            type: string
+          default: []
+        note:
+          title: Note
+          type: string
+          default: ""
+        duration:
+          title: Duration
+          type: integer
+          default: 0
+        plays:
+          title: Plays
+          type: integer
+          default: 0
+        createdAt:
+          title: Createdat
+          type: string
+          default: ""
+        createdUser:
+          title: Createduser
+          type: string
+          default: ""
+        updatedAt:
+          title: Updatedat
+          type: string
+          default: ""
+        updatedUser:
+          title: Updateduser
+          type: string
+          default: ""
+      description: Video table row
+    VideoVimeo:
+      title: VideoVimeo
+      required:
+        - total
+        - data
+      type: object
+      properties:
+        total:
+          title: Total
+          type: integer
+        data:
+          title: Data
+          type: array
+          items:
+            $ref: "#/components/schemas/DataVideoVimeo"
+      description: Video from Vimeo

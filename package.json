@@ -1,0 +1,29 @@
+{
+  "name": "api-prime-stream",
+  "version": "1.0.0",
+  "description": "社内動画共有サイトのAPI",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "generate": "redoc-cli bundle docs/openapi.yaml --output docs/index.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/prime-x-co-ltd/api-prime-stream.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/prime-x-co-ltd/api-prime-stream/issues"
+  },
+  "homepage": "https://github.com/prime-x-co-ltd/api-prime-stream#readme",
+  "dependencies": {
+    "redoc-cli": "^0.12.3",
+    "serverless": "^2.54.0"
+  },
+  "devDependencies": {
+    "serverless-apigw-binary": "^0.4.4",
+    "serverless-python-requirements": "^5.1.1"
+  }
+}

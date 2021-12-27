@@ -1,2 +1,2 @@
-# api-fastapi-video
-Getting started FastAPI
+# api-prime-stream
+社内動画共有サイトのAPI
